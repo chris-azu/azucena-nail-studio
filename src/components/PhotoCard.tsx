@@ -12,17 +12,18 @@ export function PhotoCard({ foto }: { foto: Foto }) {
           className="h-full w-full object-cover transition-smooth hover:scale-[1.03]"
         />
       </div>
-      <div className="glass-card absolute inset-x-3 bottom-3 space-y-3 p-3.5">
-        <p className="truncate font-display text-base text-ink-strong drop-shadow-sm">
-          {foto.nombre ?? 'Diseño sin nombre'}
-        </p>
+      <p className="absolute inset-x-3 bottom-[60px] truncate text-[13px] font-semibold leading-4 text-ink-strong drop-shadow-[0_1px_2px_rgba(255,255,255,0.9)]">
+        {foto.nombre ?? 'Diseño sin nombre'}
+      </p>
+      <div className="glass-card absolute bottom-2 left-2 right-2 max-h-[30%] px-2.5 py-2">
         <button
           type="button"
           onClick={() => abrirWhatsapp(cotizarWhatsapp(foto))}
-          className="btn-neu-whatsapp flex w-full items-center justify-center gap-1.5 rounded-pill px-3 py-2.5 text-xs font-bold active:scale-[0.97]"
+          className="btn-neu-whatsapp flex h-[30px] w-full items-center justify-center gap-1 rounded-pill px-3 py-1.5 text-[12px] font-bold leading-none active:scale-[0.97] sm:h-[34px]"
         >
-          <span className="material-symbols-outlined text-base">chat</span>
-          Cotizar por WhatsApp
+          <span className="material-symbols-outlined text-[16px] leading-none">chat</span>
+          <span className="sm:hidden">Cotizar</span>
+          <span className="hidden sm:inline">Cotizar por WhatsApp</span>
         </button>
       </div>
     </article>

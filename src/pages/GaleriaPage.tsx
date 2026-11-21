@@ -47,11 +47,11 @@ export function GaleriaPage() {
       {cargando ? (
         <div className="mt-6 grid grid-cols-2 gap-3.5">
           {Array.from({ length: 6 }).map((_, i) => (
-            <div key={i} className="animate-fade-up overflow-hidden rounded-card bg-white shadow-soft">
-              <div className="aspect-square bg-surface-high" />
-              <div className="space-y-2 p-3.5">
-                <div className="h-3 w-2/3 rounded-full bg-surface-high" />
-                <div className="h-8 rounded-pill bg-surface-high" />
+            <div key={i} className="relative aspect-square animate-fade-up overflow-hidden rounded-card bg-white shadow-soft">
+              <div className="absolute inset-0 bg-surface-high" />
+              <div className="absolute inset-x-3 bottom-[60px] h-3 rounded-full bg-surface-high/80" />
+              <div className="absolute bottom-2 left-2 right-2 h-[46px] max-h-[30%] rounded-card bg-white/30 px-2.5 py-2 backdrop-blur-[10px]">
+                <div className="h-[30px] rounded-pill bg-surface-high" />
               </div>
             </div>
           ))}
