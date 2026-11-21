@@ -136,25 +136,34 @@ export function TiposUniaManager() {
                 </>
               ) : (
                 <>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setEditando(tipo.id)
-                      setValorEdicion(tipo.nombre)
-                    }}
-                    className="text-primary"
-                    aria-label={`Editar ${tipo.nombre}`}
-                  >
-                    <span className="material-symbols-outlined text-lg">edit</span>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setBorrar(tipo)}
-                    className="text-red-500"
-                    aria-label={`Eliminar ${tipo.nombre}`}
-                  >
-                    <span className="material-symbols-outlined text-lg">delete</span>
-                  </button>
+                  {tipo.es_fijo && (
+                    <span className="shrink-0 rounded-pill bg-secondary-container px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-secondary">
+                      Fija
+                    </span>
+                  )}
+                  {!tipo.es_fijo && (
+                    <>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setEditando(tipo.id)
+                          setValorEdicion(tipo.nombre)
+                        }}
+                        className="text-primary"
+                        aria-label={`Editar ${tipo.nombre}`}
+                      >
+                        <span className="material-symbols-outlined text-lg">edit</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setBorrar(tipo)}
+                        className="text-red-500"
+                        aria-label={`Eliminar ${tipo.nombre}`}
+                      >
+                        <span className="material-symbols-outlined text-lg">delete</span>
+                      </button>
+                    </>
+                  )}
                 </>
               )}
             </div>

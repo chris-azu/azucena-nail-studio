@@ -1,6 +1,7 @@
 export type TiposUnia = {
   id: string
   nombre: string
+  es_fijo: boolean
   created_at: string
 }
 

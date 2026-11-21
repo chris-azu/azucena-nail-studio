@@ -2,6 +2,7 @@ import { useEffect, useState, type FormEvent } from 'react'
 import { Button } from '../components/Button'
 import { Field } from '../components/Field'
 import { Reveal } from '../components/Reveal'
+import { TIPO_REFERENCIA } from '../lib/constantes'
 import { supabase } from '../lib/supabase'
 import { abrirWhatsapp, citaWhatsapp } from '../lib/whatsapp'
 import type { CampoCita, CitaForm, TiposUnia } from '../types'
@@ -25,6 +26,7 @@ export function AgendarPage() {
     supabase
       .from('tipos_unia')
       .select('*')
+      .order('es_fijo', { ascending: true })
       .order('nombre', { ascending: true })
       .then(({ data }) => {
         if (activo) setTipos((data ?? []) as TiposUnia[])
@@ -34,14 +36,21 @@ export function AgendarPage() {
     }
   }, [])
 
+  const tiposVisibles = tipos.some((tipo) => tipo.nombre === TIPO_REFERENCIA)
+    ? tipos
+    : [...tipos, { id: 'referencia', nombre: TIPO_REFERENCIA, es_fijo: true, created_at: '' }]
+
   const actualizar = (campo: CampoCita, valor: string) => {
-    setForm((prev) => ({ ...prev, [campo]: valor }))
+    const valorFinal = campo === 'telefono' ? valor.replace(/\D/g, '').slice(0, 8) : valor
+    setForm((prev) => ({ ...prev, [campo]: valorFinal }))
     setErrores((prev) => ({ ...prev, [campo]: undefined }))
   }
 
   const claseCampo = (campo: CampoCita) =>
     `w-full rounded-2xl border bg-white/70 px-4 py-3 text-sm text-ink-strong outline-none transition placeholder:text-ink/35 focus:border-primary focus:ring-2 focus:ring-primary-container/60 ${
-      errores[campo] ? 'border-red-400' : 'border-outline'
+      errores[campo]
+        ? 'border-red-300 bg-red-50/40 focus:border-red-400 focus:ring-red-200/60'
+        : 'border-outline'
     }`
 
   const enviar = (evento: FormEvent) => {
@@ -51,6 +60,10 @@ export function AgendarPage() {
     ;(Object.keys(form) as CampoCita[]).forEach((campo) => {
       if (!form[campo].trim()) nuevosErrores[campo] = 'Este campo es obligatorio'
     })
+
+    if (!nuevosErrores.telefono && !/^\d{8}$/.test(form.telefono)) {
+      nuevosErrores.telefono = 'Ingresa un número de 8 dígitos'
+    }
 
     setErrores(nuevosErrores)
     if (Object.keys(nuevosErrores).length > 0) return
@@ -111,8 +124,11 @@ export function AgendarPage() {
               className={claseCampo('telefono')}
               value={form.telefono}
               onChange={(e) => actualizar('telefono', e.target.value)}
-              placeholder="Ej. 7879 2776"
-              inputMode="tel"
+              placeholder="Ej. 78792776"
+              inputMode="numeric"
+              maxLength={8}
+              pattern="[0-9]{8}"
+              autoComplete="tel-national"
             />
           </Field>
         </Reveal>
@@ -125,7 +141,7 @@ export function AgendarPage() {
               onChange={(e) => actualizar('tipo', e.target.value)}
             >
               <option value="">Selecciona un tipo</option>
-              {tipos.map((tipo) => (
+              {tiposVisibles.map((tipo) => (
                 <option key={tipo.id} value={tipo.nombre}>
                   {tipo.nombre}
                 </option>

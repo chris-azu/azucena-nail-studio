@@ -14,13 +14,6 @@ export function AppHeader() {
             Azucena Nail Studio
           </span>
         </Link>
-        <Link
-          to="/admin"
-          className="grid h-9 w-9 place-items-center rounded-full bg-primary-container text-primary transition active:scale-95"
-          aria-label="Acceso administrativo"
-        >
-          <span className="material-symbols-outlined text-[19px]">person_outline</span>
-        </Link>
       </div>
     </header>
   )
